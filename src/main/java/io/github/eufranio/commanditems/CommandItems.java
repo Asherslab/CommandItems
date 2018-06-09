@@ -77,9 +77,15 @@ public class CommandItems {
 
         CommandSpec give = CommandSpec.builder()
                 .permission("commanditems.give")
-                .arguments(GenericArguments.string(Text.of("uuid")), GenericArguments.optional(GenericArguments.player(Text.of("player"))))
+                .arguments(GenericArguments.string(Text.of("uuid")), GenericArguments.optional(GenericArguments.player(Text.of("player"))), GenericArguments.optional(GenericArguments.integer(Text.of("amount"))))
                 .executor((sender, context) -> {
                     Player player = null;
+                    int amount = 64;
+                        
+                    if (context.<int>getOne("amount").isPresent()) {
+                        amount = context.<int>getOne("amount").get();       
+                    }
+                    
                     if (context.<Player>getOne("player").isPresent()) {
                         player = context.<Player>getOne("player").get();
                     } else if (sender instanceof Player) {
